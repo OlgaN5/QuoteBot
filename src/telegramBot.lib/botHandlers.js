@@ -57,10 +57,18 @@ class BotHandler {
         }
     }
     async addQuote(messageText, chatId) {
-        if (this.quoteParam) {
-            await this.editMetods[this.quoteParam](messageText, chatId)
-        } else {
-            await this.editMetods[messageText](chatId)
+        try {
+            if (this.quoteParam) {
+                await this.editMetods[this.quoteParam](messageText, chatId)
+            } else {
+                console.log('messageText')
+                console.log(messageText)
+                await this.editMetods[messageText](chatId)
+            }
+        } catch (e) {
+            console.log(e.message)
+            console.log(messageText)
+            await this.bot.sendMessage(chatId, 'Ошибка')
         }
     }
 
@@ -87,14 +95,20 @@ class BotHandler {
     }
 
     async editProcess(messageText, chatId) {
-        const butttonMessages = ['Текст', 'Ключи', 'Тема', 'Отправить']
-        if (this.quoteParam) {
-            await this.editMetods[this.quoteParam](messageText, chatId)
-        } else if (butttonMessages.includes(messageText)) {
-            await this.editMetods[messageText](chatId)
-        } else {
-            this.editId = messageText
-            await this.bot.sendMessage(chatId, 'Выберите действие', quoteParameters)
+        try {
+            const butttonMessages = ['Текст', 'Ключи', 'Тема', 'Отправить']
+            if (this.quoteParam) {
+                await this.editMetods[this.quoteParam](messageText, chatId)
+            } else if (butttonMessages.includes(messageText)) {
+                await this.editMetods[messageText](chatId)
+            } else {
+                this.editId = messageText
+                await this.bot.sendMessage(chatId, 'Выберите действие', quoteParameters)
+            }
+        } catch (e) {
+            console.log(e.message)
+            console.log(messageText)
+            await this.bot.sendMessage(chatId, 'Ошибка')
         }
     }
     async sendQuote(chatId) {
@@ -124,6 +138,9 @@ class BotHandler {
         const chatId = msg.chat.id
         console.log(chatId)
         switch (messageText) {
+            case '/start':
+                await this.bot.sendMessage(chatId, 'Выберите действие', quoteParameters)
+                break
             case '/add':
                 if (this.admins.includes(msg.from.id)) {
                     this.operation = 'adding'

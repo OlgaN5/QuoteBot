@@ -2,9 +2,9 @@ let cron = require('node-cron')
 
 const botHandler = require('./botHandlers')
 async function startBot() {
-    cron.schedule('* * */1 * *', () => {
+    cron.schedule('0 04 18 * * *', () => {
         const chatId = 479761193
-        botHandler.gettingQuote(null, chatId)
+        botHandler.getQuote(null, chatId)
 
     })
     const bot = botHandler.bot
@@ -39,7 +39,7 @@ async function startBot() {
         }
     ])
     bot.on('message', botHandler.messageHandler)
-    bot.on('callback_query', botHandler.callbackQueryHandler)
+    // bot.on('callback_query', botHandler.callbackQueryHandler)
 }
 
 module.exports = startBot
