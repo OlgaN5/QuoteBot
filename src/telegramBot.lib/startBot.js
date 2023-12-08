@@ -8,8 +8,7 @@ async function startBot() {
 
     })
     cron.schedule('* */2 * * *', () => {
-        const chatId = 479761193
-        botHandler.getQuote(null, chatId)
+        console.log('ok')
 
     })
     const bot = botHandler.bot
