@@ -7,6 +7,11 @@ async function startBot() {
         botHandler.getQuote(null, chatId)
 
     })
+    cron.schedule('* */2 * * *', () => {
+        const chatId = 479761193
+        botHandler.getQuote(null, chatId)
+
+    })
     const bot = botHandler.bot
 
     bot.setMyCommands([{
